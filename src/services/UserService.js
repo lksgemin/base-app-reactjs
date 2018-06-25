@@ -31,7 +31,29 @@ export function getCurrentUser() {
 
 export function getUserProfile(username) {
     return request({
-        url: API_BASE_URL + "/user/" + username,
+        url: API_BASE_URL + "/user/getUserProfileBy/" + username,
         method: 'GET'
+    });
+}
+
+export function getUserById(userid) {
+    return request({
+        url: API_BASE_URL + "/user/" + userid,
+        method: 'GET'
+    });
+}
+
+export function getAllUsers() {
+    return request({
+        url: API_BASE_URL + "/user/all",
+        method: 'GET'
+    });
+}
+
+export function updateUser(updateUserRequest) {
+    return request({
+        url: API_BASE_URL + "/user/" + updateUserRequest.id,
+        method: 'PUT',
+        body: JSON.stringify(updateUserRequest)
     });
 }

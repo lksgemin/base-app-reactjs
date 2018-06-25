@@ -32,6 +32,11 @@ class AppHeader extends Component {
                 <ProfileDropdownMenu 
                   currentUser={this.props.currentUser} 
                   handleMenuClick={this.handleMenuClick}/>
+            </Menu.Item>,
+          <Menu.Item key="/settings" className="settings-menu">
+                <SettingsDropdownMenu 
+                  currentUser={this.props.currentUser} 
+                  handleMenuClick={this.handleMenuClick}/>
             </Menu.Item>
           ]; 
         } else {
@@ -92,6 +97,27 @@ function ProfileDropdownMenu(props) {
       getPopupContainer = { () => document.getElementsByClassName('profile-menu')[0]}>
       <a className="ant-dropdown-link">
          <Icon type="user" className="nav-icon" style={{marginRight: 0}} /> <Icon type="down" />
+      </a>
+    </Dropdown>
+  );
+}
+
+function SettingsDropdownMenu(props) {
+  const dropdownMenu = (
+    <Menu onClick={props.handleMenuClick} className="settings-dropdown-menu">
+      <Menu.Item key="users" className="dropdown-item">
+        <Link to={`/users`}>Users</Link>
+      </Menu.Item>
+    </Menu>
+  );
+
+  return (
+    <Dropdown 
+      overlay={dropdownMenu} 
+      trigger={['click']}
+      getPopupContainer = { () => document.getElementsByClassName('settings-menu')[0]}>
+      <a className="ant-dropdown-link">
+         <Icon type="setting" className="nav-icon" style={{marginRight: 0}} /> <Icon type="down" />
       </a>
     </Dropdown>
   );

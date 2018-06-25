@@ -12,6 +12,8 @@ import { ACCESS_TOKEN } from '../constants';
 import Login from '../user/login/Login';
 import Signup from '../user/signup/Signup';
 import Profile from '../user/profile/Profile';
+import UserList from '../user/userlist/UserList';
+import UpdateUser from '../user/update-user/UpdateUser';
 import Dashboard from '../dashboard/Dashboard';
 import AppHeader from '../common/AppHeader';
 import NotFound from '../common/NotFound';
@@ -107,7 +109,13 @@ class App extends Component {
                 <Route path="/signup" component={Signup}></Route>
                 <Route path="/users/:username" 
                   render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
-                </Route>                
+                </Route> 
+                <Route path="/users" 
+                  render={(props) => <UserList isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
+                </Route> 
+                <Route path="/user/:userid" 
+                  render={(props) => <UpdateUser isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
+                </Route>              
                 <Route component={NotFound}></Route>
               </Switch>
             </div>

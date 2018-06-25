@@ -1,0 +1,21 @@
+.updateuser-container {
+    max-width: 420px;
+    margin: 0 auto;
+    margin-top: 40px;    
+}
+
+.updateuser-form-button {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.updateuser-form-button[disabled], .updateuser-form-button[disabled]:hover, .updateuser-form-button[disabled]:focus {
+    opacity: 0.6;
+    color: #fff;
+    background-color: #1890ff;
+    border-color: #1890ff;
+}
+
+.updateuser-form input {
+    margin-bottom: 3px;
+}
