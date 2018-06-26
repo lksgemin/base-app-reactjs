@@ -25,7 +25,6 @@ class UserList extends Component {
 
     getAllUsers()
     .then(response => {
-      console.log(response);
       this.setState({
         users: response,
         isLoading: false

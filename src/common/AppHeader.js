@@ -32,13 +32,17 @@ class AppHeader extends Component {
                 <ProfileDropdownMenu 
                   currentUser={this.props.currentUser} 
                   handleMenuClick={this.handleMenuClick}/>
-            </Menu.Item>,
-          <Menu.Item key="/settings" className="settings-menu">
-                <SettingsDropdownMenu 
-                  currentUser={this.props.currentUser} 
-                  handleMenuClick={this.handleMenuClick}/>
             </Menu.Item>
           ]; 
+          if(this.props.currentUser.admin){
+            menuItems.push(
+              <Menu.Item key="/settings" className="settings-menu">
+                  <SettingsDropdownMenu 
+                    currentUser={this.props.currentUser} 
+                    handleMenuClick={this.handleMenuClick}/>
+              </Menu.Item>
+            )
+          }
         } else {
           menuItems = [
             <Menu.Item key="/login">

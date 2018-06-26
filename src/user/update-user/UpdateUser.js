@@ -103,7 +103,7 @@ class UpdateUser extends Component {
     }
 
 
-    handleSubmit(event, callback) {
+    async handleSubmit(event, callback) {
         event.preventDefault();
     
         const updateUserRequest = {
@@ -112,23 +112,30 @@ class UpdateUser extends Component {
             email: this.state.email.value,
             username: this.state.username.value
         };
+        await this.validateUsernameAvailability();
+        await this.validateEmailAvailability();
+        await this.validateNameFormat();
 
-        updateUser(updateUserRequest)
-        .then(response => {
-            notification.success({
-                message: 'User',
-                description: "User successfully updated!"
-            });          
-        }).catch(error => {
-            notification.error({
-                message: 'User',
-                description: error.message || 'Sorry! Something went wrong. Please try again!'
+        const formValid = this.isFormInvalid();
+
+        if(formValid){
+            updateUser(updateUserRequest)
+            .then(response => {
+                notification.success({
+                    message: 'User',
+                    description: "User successfully updated!"
+                });          
+            }).catch(error => {
+                notification.error({
+                    message: 'User',
+                    description: error.message || 'Sorry! Something went wrong. Please try again!'
+                });
             });
-        });
+        }
     }
 
     isFormInvalid() {
-            return !(this.state.name.validateStatus === 'success' &&
+            return (this.state.name.validateStatus === 'success' &&
         this.state.username.validateStatus === 'success' &&
         this.state.email.validateStatus === 'success');
     }
@@ -262,21 +269,22 @@ class UpdateUser extends Component {
         }
     }
 
-    validateUsernameAvailability() {
+    async validateUsernameAvailability() {
         // First check for client side errors in username
         const usernameValue = this.state.username.value;
-        const usernameValidation = this.validateUsername(usernameValue);
+        const usernameValidation = await this.validateUsername(usernameValue);
 
-        // if(usernameValue === this.state.initialUser.username){
-        //     this.setState({
-        //         username: {
-        //             value: usernameValue,
-        //             validateStatus: 'success',
-        //             errorMsg: null
-        //         }
-        //     });
-        //     return;
-        // }
+        if(usernameValue === this.state.initialUser.username){
+            this.setState({
+                username: {
+                    value: usernameValue,
+                    validateStatus: 'success',
+                    errorMsg: null
+                }
+            });
+            this.state.initialUser.username = usernameValue;
+            return;
+        }
 
         if(usernameValidation.validateStatus === 'error') {
             this.setState({
@@ -296,7 +304,7 @@ class UpdateUser extends Component {
             }
         });
 
-        checkUsernameAvailability(usernameValue)
+        await checkUsernameAvailability(usernameValue)
         .then(response => {
             if(response.available) {
                 this.setState({
@@ -327,7 +335,7 @@ class UpdateUser extends Component {
         });
     }
 
-    validateEmailAvailability() {
+    async validateEmailAvailability() {
         // First check for client side errors in email
         const emailValue = this.state.email.value;
         const emailValidation = this.validateEmail(emailValue);
@@ -360,7 +368,7 @@ class UpdateUser extends Component {
             }
         });
 
-        checkEmailAvailability(emailValue)
+        await checkEmailAvailability(emailValue)
         .then(response => {
             if(response.available) {
                 this.setState({
@@ -389,6 +397,29 @@ class UpdateUser extends Component {
                 }
             });
         });
+    }
+
+    async validateNameFormat() {
+        const nameValue = this.state.name.value;
+        const nameValidation = this.validateName(nameValue);
+
+        if(nameValidation.validateStatus === 'error') {
+            this.setState({
+                name: {
+                    value: nameValidation,
+                    ...nameValidation
+                }
+            });
+            return;
+        }else{
+            this.setState({
+                name: {
+                    value: nameValue,
+                    validateStatus: 'success',
+                    errorMsg: null
+                }
+            });
+        }
     }
 
 }
